@@ -1,64 +1,99 @@
-# Analytics API 🚀
+<div align="center">
+  <h1>📊 Inventory Analytics API</h1>
+  <p>
+    <strong>API RESTful de alto rendimiento para el análisis de inventarios y préstamos.</strong>
+  </p>
+  <p>
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas" />
+    <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  </p>
+</div>
 
-Esta es una API Analítica construida con **FastAPI** y **Pandas** diseñada para conectarse a una base de datos PostgreSQL. Extrae, procesa y formatea datos de inventario y préstamos para ser consumidos directamente por librerías de gráficos en el frontend (como Recharts o Chart.js).
+<hr />
 
-## 🛠️ Tecnologías
+## 💡 ¿Qué hace esta aplicación?
 
-- **FastAPI**: Framework web asíncrono y de alto rendimiento.
-- **Pandas**: Procesamiento y agregación de datos (agrupación mensual, contadores, alertas).
-- **SQLAlchemy**: ORM para gestionar la conexión y lectura de datos.
-- **Pydantic**: Validación de datos y generación de esquemas JSON estrictos.
-- **PostgreSQL**: Base de datos relacional principal.
+**Analytics API** es un motor de procesamiento de datos backend diseñado para integrarse directamente con Dashboards en React, Vue o cualquier otro framework de frontend. 
 
-## ⚙️ Requisitos Previos
+En lugar de delegar cálculos pesados al navegador del cliente, esta API se encarga de conectar con la base de datos PostgreSQL, leer las tablas crudas de inventarios y préstamos, y utilizar **Pandas** para limpiar, agrupar y transformar millones de registros instantáneamente. 
 
-- Python 3.11+
-- Base de datos PostgreSQL (local o en la nube como Prisma/Supabase)
+Entre sus capacidades clave destacan:
+- **Agrupación Temporal:** Analiza historiales de préstamos mensuales (últimos 6 meses).
+- **KPIs en Tiempo Real:** Calcula el inventario disponible, equipos dañados y préstamos atrasados.
+- **Detección de Anomalías:** Genera alertas críticas de stock agotado (< 10% del total) y fechas de entrega vencidas.
+- **Formato Listo para Graficar:** Devuelve la data estructurada en objetos JSON que encajan perfectamente en librerías como Recharts o Chart.js.
 
-## 🚀 Instalación y Ejecución Local
+---
 
-1. **Clonar el repositorio y entrar en la carpeta:**
-   ```bash
-   cd python-backend
-   ```
+## 🚀 Instalación y Configuración
 
-2. **Instalar dependencias:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+Sigue estos pasos para correr el motor analítico en tu máquina local.
 
-3. **Configurar Variables de Entorno:**
-   Configura la URL de tu base de datos (por defecto la app intentará usar la variable `DATABASE_URL`).
-   ```bash
-   # En Windows PowerShell
-   $env:DATABASE_URL="postgresql://usuario:password@localhost:5432/tu_base_de_datos"
-   ```
+### 1. Requisitos Previos
+* **Python 3.11** o superior instalado en tu sistema.
+* Una base de datos **PostgreSQL** activa (ya sea local usando pgAdmin o remota como Prisma/Supabase).
 
-4. **Ejecutar el servidor local:**
-   ```bash
-   uvicorn main:app --reload
-   ```
-   La API estará corriendo en `http://127.0.0.1:8000`.
+### 2. Clonar e Instalar
+```bash
+# 1. Clonar el repositorio
+git clone <URL_DEL_REPO>
+cd python-backend
 
-## ☁️ Despliegue en Render
+# 2. Instalar dependencias 
+pip install -r requirements.txt
+```
 
-El proyecto está pre-configurado para desplegarse fácilmente en [Render.com](https://render.com).
+### 3. Variables de Entorno
+Por defecto, la API utiliza una conexión de prueba. Para conectarte a tu propia base de datos, configura la variable en tu terminal antes de ejecutar:
 
-1. Conecta este repositorio en tu dashboard de Render creando un nuevo **Web Service**.
-2. **Start Command**: `python main.py` (o alternativamente `uvicorn main:app --host 0.0.0.0 --port $PORT`).
-3. **Environment Variables**:
-   - `PYTHON_VERSION`: `3.11.6`
-   - `DATABASE_URL`: Tu connection string de PostgreSQL (Ej. proporcionado por Prisma). *Nota: Si empieza por `postgres://`, la app lo convierte automáticamente a `postgresql://` para evitar errores.*
-   - `FRONTEND_URL`: `*` (o la URL de tu Vercel/Netlify por seguridad).
+**En Windows (PowerShell):**
+```powershell
+$env:DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/mi_base_de_datos"
+```
+*(Render inyectará esta variable automáticamente en producción).*
 
-## 📡 Endpoints Principales
+---
 
-Puedes probar todos los endpoints y ver sus respuestas exactas accediendo a la documentación interactiva Swagger UI:
-👉 **`http://127.0.0.1:8000/docs`**
+## 📖 Instructivo de Uso
 
-- `GET /` - Health check de la API.
-- `GET /analytics/kpis` - Resumen general numérico (Inventario total, préstamos activos, etc.).
-- `GET /analytics/category-distribution` - Distribución de inventario por categoría (Ideal para gráficos de tarta).
-- `GET /analytics/loan-history` - Historial de los últimos 6 meses (Ideal para gráficos de barras/líneas).
-- `GET /analytics/top-articles` - Top 5 de artículos más prestados.
-- `GET /analytics/critical-alerts` - Alertas de stock bajo o préstamos atrasados.
+Una vez instalado, levantar el proyecto y consumirlo es extremadamente simple.
+
+### Iniciar el Servidor
+Ejecuta el siguiente comando en tu terminal para arrancar Uvicorn con recarga en vivo (ideal para desarrollo):
+
+```bash
+uvicorn main:app --reload
+```
+Verás en consola que el servidor está escuchando en `http://127.0.0.1:8000`.
+
+### Consumir la Documentación Interactiva (Swagger)
+FastAPI genera documentación automática de clase mundial. Abre tu navegador y dirígete a:
+👉 **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
+
+Desde aquí puedes probar la API haciendo clic en **"Try it out"** en cualquiera de los siguientes endpoints:
+
+| Endpoint | Método | ¿Para qué sirve? |
+| :--- | :---: | :--- |
+| `/` | `GET` / `HEAD` | **Health Check:** Verifica si el servidor está encendido (usado por Render). |
+| `/analytics/kpis` | `GET` | **Métricas Globales:** Total de inventario, stock disponible y alertas generales. |
+| `/analytics/category-distribution` | `GET` | **Gráficos de Tarta:** Devuelve la cantidad de inventario separada por categoría. |
+| `/analytics/loan-history` | `GET` | **Gráfico de Líneas/Barras:** Historial de préstamos vs devoluciones en los últimos 6 meses. |
+| `/analytics/top-articles` | `GET` | **Ranking:** Los 5 artículos con mayor cantidad de salidas/préstamos. |
+| `/analytics/critical-alerts` | `GET` | **Tablas de Advertencia:** Equipos casi agotados y usuarios con fechas de préstamo vencidas. |
+
+### Integración con tu Frontend
+El proyecto tiene el **CORS configurado de forma abierta** (sin credenciales), lo que significa que desde tu proyecto en Vite/React puedes hacer peticiones `fetch()` directamente usando axios o la API Fetch nativa sin sufrir bloqueos del navegador.
+
+```javascript
+// Ejemplo en React
+const response = await fetch("http://127.0.0.1:8000/analytics/kpis");
+const data = await response.json();
+console.log("Mis KPIs listos para graficar:", data);
+```
+
+---
+<div align="center">
+  <i>Construido con Python 🐍 y mucho café ☕</i>
+</div>
