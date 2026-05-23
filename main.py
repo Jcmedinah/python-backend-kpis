@@ -11,6 +11,10 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Analytics API")
 
+@app.get("/")
+def read_root():
+    return {"status": "API corriendo correctamente"}
+
 # Configuración CORS global para aceptar todos los orígenes
 app.add_middleware(
     CORSMiddleware,
@@ -148,3 +152,9 @@ def get_critical_alerts():
         "articles": articles_list,
         "loans": loans_list
     }
+
+if __name__ == "__main__":
+    import uvicorn
+    import os
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
