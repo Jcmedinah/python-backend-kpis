@@ -12,6 +12,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Analytics API")
 
 @app.get("/")
+@app.head("/")
 def read_root():
     return {"status": "API corriendo correctamente"}
 
