@@ -38,13 +38,13 @@ def get_kpis():
     overdue_loans = 0
     
     if not loans_df.empty:
-        # Asegurarnos de que no importe si dice 'Activo', 'ACTIVE' o 'activo '
+        # La BD utiliza true/false para el estado del préstamo
         status_limpio = loans_df['status'].astype(str).str.strip().str.lower()
-        active_loans = int(len(loans_df[status_limpio == 'activo']))
+        active_loans = int(len(loans_df[status_limpio == 'true']))
         
         hoy = pd.Timestamp.now().date()
         loans_df['due_date'] = pd.to_datetime(loans_df['due_date']).dt.date
-        overdue_loans = int(len(loans_df[(status_limpio == 'activo') & (loans_df['due_date'] < hoy)]))
+        overdue_loans = int(len(loans_df[(status_limpio == 'true') & (loans_df['due_date'] < hoy)]))
     
     return schemas.KPIs(
         total_inventory=total_inventory,
@@ -149,7 +149,7 @@ def get_critical_alerts():
         hoy = pd.Timestamp.now().date()
         loans_df['due_date'] = pd.to_datetime(loans_df['due_date']).dt.date
         status_limpio = loans_df['status'].astype(str).str.strip().str.lower()
-        critical_loans = loans_df[(status_limpio == 'activo') & (loans_df['due_date'] < hoy)]
+        critical_loans = loans_df[(status_limpio == 'true') & (loans_df['due_date'] < hoy)]
         loans_list = critical_loans.to_dict(orient='records')
         
     return {
