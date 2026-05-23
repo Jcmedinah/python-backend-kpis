@@ -7,6 +7,10 @@ DATABASE_URL = os.getenv(
     "postgresql://5416f62cf0029e8b3393bc2ad9c920291f7cc56618ec6ff80d1d4f5ddf44aeb0:sk_J6cF1uqrjcBw3oD8K7MrS@pooled.db.prisma.io:5432/postgres?sslmode=require"
 )
 
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -11,11 +11,11 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Analytics API")
 
-# Configuración CORS para React (Vite usa el puerto 5173 por defecto)
+# Configuración CORS global para aceptar todos los orígenes
 app.add_middleware(
     CORSMiddleware,
-    #allow_origins=["https://andres0818.github.io/Proyecto_web_II"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
